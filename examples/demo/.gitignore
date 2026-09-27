@@ -1,0 +1,4 @@
+__pycache__/
+.conclave-runs/
+.aider*
+scratch_probe.txt

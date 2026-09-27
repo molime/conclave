@@ -1,0 +1,46 @@
+# Fully-LOCAL, zero-cost example config: Ollama qwen2.5-coder:7b for council/jury,
+# Kimi CLI as the file-editing executor. No API key, no spend.
+# Copy to conclave.yaml and edit the team: lists to taste.
+defaults:
+  max_review_iters: 2
+
+backends:
+  q_chat:
+    kind: http_openai
+    base_url: http://127.0.0.1:11434/v1
+    model: qwen2.5-coder:7b
+    timeout: 1200
+  q_exec:
+    kind: cli_kimi
+    timeout: 1800
+
+roles:
+  plan:
+    team: [q_chat]
+    aggregate: synthesize
+    synthesizer: q_chat
+  implement:
+    team: [q_exec]
+    strategy: single
+  review:
+    team: [q_chat]
+    aggregate: vote
+    quorum: any
+  fix:
+    team: [q_exec]
+    strategy: single
+  final_review:
+    team: []
+    enabled: false
+
+projects:
+  demo:
+    repo: ${CONCLAVE_HOME:-.}/examples/demo
+    gates:
+      lint: null
+      typecheck: null
+      unit: "python -m pytest -q"
+      e2e: null
+      build: null
+    stress_cmd: null
+    context: "A tiny Python library (demolib.py) with pytest tests. Pure stdlib."

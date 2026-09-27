@@ -1,0 +1,9 @@
+# Conclave
+.env
+*.log
+__pycache__/
+*.pyc
+.conclave-runs/
+.venv/
+node_modules/
+examples/demo/.pytest_cache/

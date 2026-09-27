@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# conclave launcher (POSIX). Resolves the package dir and runs the CLI.
+set -euo pipefail
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+export CONCLAVE_HOME="$HERE"
+PY="${CONCLAVE_PYTHON:-python}"
+command -v "$PY" >/dev/null 2>&1 || PY=python3
+exec "$PY" -m conclave.cli "$@"
